@@ -11,16 +11,16 @@ from py_console import console
 
 
 class Translate():
-    __TRANSLATE_MAX = 2000 # max characters I can supply to google translate through the url
+    __TRANSLATE_MAX = 2000  # max characters I can supply to google translate through the url
     __TRANSLATED_TEXT_XPATH = "/html/body/c-wiz/div/div[2]/c-wiz/div[2]/c-wiz/div[1]/div[2]/div[3]/c-wiz[2]/div[6]/div/div[1]/span[1]/span/span"
-    __GECKODRIVER_PATH = './geckodriver'
+    __GECKODRIVER_PATH = f"{os.getcwd()}/required_files/geckodriver"
     browser = None
 
 
     def __init__(self, hide_window=True):
         if hide_window:
             os.environ['MOZ_HEADLESS'] = '1'  # hides the Firefox window
-        if not os.path.isfile('./geckodriver'):
+        if not os.path.isfile(self.__GECKODRIVER_PATH):
             console.warn("Warning: geckodriver is not in directory: downloading to this directory")
             download_link = ""
             match platform.system():  # TODO: add Windows support 
@@ -41,6 +41,7 @@ class Translate():
                 return
             if platform.system() == 'Darwin' or platform.system() == 'Linux':
                 os.system(f"""
+                          cd {os.getcwd()}/required_files
                           wget {download_link} 
                           tar -xf {download_link.split('/')[-1]}
                           rm {download_link.split('/')[-1]}
@@ -49,7 +50,7 @@ class Translate():
                 
 
     def translate_codes(self, lang_name):
-        csvfile = open('codes.csv', newline='')
+        csvfile = open(f"{os.getcwd()}/required_files/codes.csv", newline='')
         reader = csv.DictReader(csvfile)
         for row in reader:
             if row["Language Name"] == lang_name:
