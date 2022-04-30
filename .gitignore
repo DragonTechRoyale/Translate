@@ -3,3 +3,4 @@ geckodriver.log
 __pycache__
 required_files/codes.csv
 required_files/geckodriver.log
+.DS_Store
